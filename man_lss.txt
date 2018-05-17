@@ -12,8 +12,8 @@ lss [options] [filename or directory name]
 
 #### Options ####
 
--a include all hidden files (such as those beginning with .  and ..)
--A ignore hidden files (such as those beginning with . and ..)
+-a include all hidden files that start with . and .. 
+-A ignore files . and .. but include other files that begin with .
 -L ignore symbolic links
 
 ####

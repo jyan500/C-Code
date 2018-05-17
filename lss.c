@@ -146,7 +146,7 @@ int printFileInfo(struct fileInfo fi, int LFlag){
 	}
 	else{
 
-		if (strcmp(fi.fileName, fi.linkName) != 0){
+		if (strcmp(fi.linkName, "") != 0){
 			printf(" %s -> %s\n", fi.fileName, fi.linkName);
 		}
 		else{
@@ -188,9 +188,9 @@ struct fileInfo returnFileStruct(char * path, int aFlag, int AFlag, int LFlag){
 			fi.linkExists = 0;
 		}
 	}
-	//if there's no symbolic link, just copy the filename into the linkname (since its a hardlink)
+	//if there's no symbolic link, define as empty string 
 	else{
-		strcpy(fi.linkName, path);
+		strcpy(fi.linkName, "");
 	}
 	fi.mode = st.st_mode;
 	fi.numLinks = st.st_nlink;
@@ -218,12 +218,20 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 	if (d){
 		while ( (dir = readdir(d)) != NULL){
 			// if the aFlag is not set, don't include files that begin with .
-			if (dir->d_name[0] == '.' && aFlag != 1){
-				continue;
+			if (dir->d_name[0] == '.'){
+				if (AFlag == 1){
+					//printf("Is this true %d\n", dir->d_name == ".");
+					if (strcmp(dir->d_name,".") == 0 || strcmp(dir->d_name, "..") == 0){
+						continue;
+					}
+				}
+				else if (aFlag != 1){
+					continue;
+				}
+				
 			}
-			else{
-				++lenOfFileArray;
-			}
+			//printf("while getting lenOfaRray %s\n", dir->d_name);
+			++lenOfFileArray;
 			
 		}
 		if (closedir(d) < 0){
@@ -241,7 +249,7 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 	d = opendir(path);
 	int i = 0;
 
-	//printf("%d\n", lenOfFileArray);
+	//printf("lenOfFileArray: %d\n", lenOfFileArray);
 	if (d){
 		while ( (dir = readdir(d)) != NULL){
 			if (!dir){
@@ -261,7 +269,7 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 				
 				if ( (stat(tempFileName, &st) < 0)){
 					//printf("Dirname that's causing error: %s\n", dir->d_name);
-					perror("stat");
+					//perror("stat");
 				}
 
 			}
@@ -270,17 +278,31 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 					perror("lstat");
 				}
 			}
-			if (dir->d_name[0] == '.' && aFlag != 1){
-				continue;
+			// if file is a . or .. and AFlag is not set, don't include
+			struct fileInfo ft;
+			//printf("Current one before crashes: %s\n", dir->d_name);
+			//printf("current index: %d\n", i);
+			// if file starts with a . and aflag is not set, don't include
+			if (dir->d_name[0] == '.'){
+				if (AFlag == 1){
+					if (strcmp(dir->d_name,".") == 0 || strcmp(dir->d_name, "..") == 0){
+						continue;
+					}
+
+				}
+				else if (aFlag != 1){
+					continue;
+				}
+				
 			}
+			//printf("Crashing 3? on %s\n", dir->d_name);
 			fileArray[i].mode = st.st_mode;
 			fileArray[i].numLinks = st.st_nlink;
 			fileArray[i].uid = st.st_uid;
 			fileArray[i].gid = st.st_gid;
 			fileArray[i].size = st.st_size;
 			fileArray[i].modTime = st.st_mtime;
-			strcpy(fileArray[i].fileName,dir->d_name );
-				
+			strcpy(fileArray[i].fileName ,dir->d_name);	
 			// if there's a softlink, get the name of it
 			if ( (lenLink = readlink(tempFileName, linkname, sizeof(linkname) - 1)) != -1){
 				
@@ -298,7 +320,7 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 			}
 			//if there's no symbolic link, just copy the filename into the linkname (since its a hardlink)
 			else{
-				strcpy(fileArray[i].linkName, dir->d_name);
+				strcpy(fileArray[i].linkName, "");
 			}
 
 			i++;
