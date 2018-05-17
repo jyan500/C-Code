@@ -201,11 +201,11 @@ int main(int argc, char * argv[]){
 	//printf("N: %d\n", N);
 	//printf("M: %d\n", M);
 	if (M < 0 || N < 0){
-		printf("Usage: M and N must be positive integers");
+		printf("Usage: M and N must be positive integers\n");
 		exit(1);
 	}
 	if (M > N){
-		printf("Usage: M must be less than N");
+		printf("Usage: M must be less than N\n");
 		exit(1);
 	}
 	
@@ -213,7 +213,8 @@ int main(int argc, char * argv[]){
 	int i;
 	//printf("Filename here: %s\n", fileNames[0]);
 	//printf("filenameslen: %d\n", fileNamesLen);
-	for (int i = 0; i < fileNamesLen; i++){
+	//
+	for (i = 0; i < fileNamesLen; i++){
 		//printf("%d\n", i);
 		//printf("%s\n", fileNames[i]);
 		if ( (fp = fopen(fileNames[i], "r")) == NULL){

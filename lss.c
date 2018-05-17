@@ -315,7 +315,8 @@ int printStatDirectory(char * path, int aFlag, int AFlag, int LFlag){
 	qsort(fileArray, lenOfFileArray, sizeof(*fileArray), compare);
 	int printLater = 0;
 	struct fileInfo sav;
-	for (int j = 0; j < lenOfFileArray; j++){
+	int j = 0;
+	for (j = 0; j < lenOfFileArray; j++){
 		struct fileInfo fi = fileArray[j];
 		// if the link doesn't exist and using -L option, print this out as the last link
 		if (fi.linkExists == -1 && LFlag == 1){
@@ -398,7 +399,8 @@ int main(int argc, char * argv[]){
 			}
 		}
 		qsort(fileArray, numFiles, sizeof(*fileArray), compare);
-		for (int j = 0; j < numFiles; j++){
+		int j = 0;
+		for (j = 0; j < numFiles; j++){
 			struct fileInfo fi = fileArray[j];
 			printFileInfo(fi, LFlag);
 		}
