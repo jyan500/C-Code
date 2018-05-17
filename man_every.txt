@@ -1,0 +1,18 @@
+#### every.c ####
+### Written by Jansen Yan ###
+### For CS 146 ###
+
+### Purpose ###
+
+Given filenames as arguments, print M Lines out of every N
+
+### Usage ###
+
+$ every [-N, M] [<list-of-files>]
+
+M and N must be positive, and M <= N
+
+
+
+
+

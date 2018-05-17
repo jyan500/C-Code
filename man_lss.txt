@@ -1,0 +1,21 @@
+#### lss ####
+#### written by Jansen Yan ####
+#### CS 146 ####
+
+#### DISCLAIMER: I implemented the 40 point version ####
+
+#### Purpose ####
+Perform ls -lS (long ls with sorting by file size, displayed in descending order)
+#### Usage ####
+
+lss [options] [filename or directory name]
+
+#### Options ####
+
+-a include all hidden files (such as those beginning with .  and ..)
+-A ignore hidden files (such as those beginning with . and ..)
+-L ignore symbolic links
+
+####
+
+
