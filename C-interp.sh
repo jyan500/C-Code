@@ -2,6 +2,10 @@
 
 trap safeClean 0 1 2 3 15
 
+## Perform ln -s C-interp C-File, 
+## where C-File is the name of your .c file without the ".c"
+## the symbolic link C-File will compile and run the code
+
 ## create the directory where compiled files will go if it doesn't exist
 DIRNAME=`mktemp -d /tmp/foo.XXXXXXX` 
 safeClean(){
@@ -12,15 +16,8 @@ safeClean(){
 	## remove the directory itself
 	rm -d $DIRNAME
 	
-	echo "safe cleaned completed "
 	exit 1
 }
-
-## check for -o option, if so, then default to /tmp/1ra
-##if echo $@ | grep '\-o' >/dev/null
-##	then
-##		echo "USAGE: -o option is defaulted to random folder in tmp"
-##fi
 
 ## compile the c code 
 gcc $0.c -o $DIRNAME/$0.o
