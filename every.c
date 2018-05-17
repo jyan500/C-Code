@@ -95,12 +95,7 @@ int main(int argc, char * argv[]){
 			// if the first param is not a str, copy the -N,M arg 
 			i = 2;
 			
-			if (getenv("EVERY") != NULL){
-				strcpy(patternStr, getenv("EVERY"));
-			}
-			else{
-				strcpy(patternStr, "-1,1");
-			}
+			strcpy(patternStr, argv[1]);
 		}
 		int whereStart = i;
 		for (; i < argc; i++){
