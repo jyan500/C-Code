@@ -59,7 +59,12 @@ int main(int argc, char * argv[]){
 	if (argc == 2){
 		if (isRegularFile(argv[1]) == 1){
 			isFileFirst = 1;
-			strcpy(patternStr, getenv("EVERY"));
+			if (getenv("EVERY") != NULL){
+				strcpy(patternStr, getenv("EVERY"));
+			}
+			else{
+				strcpy(patternStr, "-1,1");
+			}
 			fileNamesLen = 1;
 			fileNames = malloc(sizeof(char) * fileNamesLen);
 			fileNames[0] = argv[1];
@@ -76,14 +81,26 @@ int main(int argc, char * argv[]){
 		// must make sure that all files in list of files are valid
 		int i = 0;
 		if (isRegularFile(argv[1]) == 1){
-			printf("%s\n", "within else");
+			//printf("%s\n", "within else");
 			i = 1;
-			strcpy(patternStr, getenv("EVERY"));
+
+			if (getenv("EVERY") != NULL){
+				strcpy(patternStr, getenv("EVERY"));
+			}
+			else{
+				strcpy(patternStr, "-1,1");
+			}
 		}
 	    else{
 			// if the first param is not a str, copy the -N,M arg 
 			i = 2;
-			strcpy(patternStr, argv[1]);
+			
+			if (getenv("EVERY") != NULL){
+				strcpy(patternStr, getenv("EVERY"));
+			}
+			else{
+				strcpy(patternStr, "-1,1");
+			}
 		}
 		int whereStart = i;
 		for (; i < argc; i++){
@@ -94,17 +111,17 @@ int main(int argc, char * argv[]){
 			fileNamesCounter++;
 		}
 		fileNamesLen = fileNamesCounter;
-		printf("In else: fileNamesLen %d\n", fileNamesLen);
+		//printf("In else: fileNamesLen %d\n", fileNamesLen);
 		fileNames = malloc(sizeof(char) * fileNamesLen);
 		fileNamesCounter = 0;
 		// reset i back to original position (whether get argv[1] or argv[2])
 		i = whereStart;
-		printf("After resetting i should be 2: %d\n", i);
+		//printf("After resetting i should be 2: %d\n", i);
 		int amt = fileNamesLen + i;
 		for (i; i < amt ; i++){
-			printf("within loop: %s\n", argv[i]);	
+			//printf("within loop: %s\n", argv[i]);	
 			fileNames[fileNamesCounter] = argv[i];
-			printf("fileNames[%d] : %s\n",fileNamesCounter,  fileNames[fileNamesCounter]);
+			//printf("fileNames[%d] : %s\n",fileNamesCounter,  fileNames[fileNamesCounter]);
 			fileNamesCounter++;
 		}
 
@@ -118,12 +135,13 @@ int main(int argc, char * argv[]){
 
 	// Execute Regular Expression to find matched groups
 	
-	if (patternStr != NULL){
+	//printf("%s\n", patternStr);
+	if (patternStr != '\0'){
 		returnVal = regexec(&regex, patternStr, MAX_MATCHES, matches,0);
 		if (!returnVal){
 			// start matching from group 1
 			int i;
-			printf("%s\n", "match");
+			//printf("%s\n", "match");
 			for (i = 0; i < MAX_MATCHES; i++){
 				if (matches[i].rm_so == (size_t)-1){
 					break;
@@ -132,9 +150,9 @@ int main(int argc, char * argv[]){
 				char srcCopy[strlen(patternStr) + 1];
 				strcpy(srcCopy, patternStr);
 				srcCopy[matches[i].rm_eo] = 0;
-				printf("Group %u: [%2u-%2u]: %s\n",
-					i, matches[i].rm_so, matches[i].rm_eo,
-					srcCopy + matches[i].rm_so);
+				//printf("Group %u: [%2u-%2u]: %s\n",
+			//		i, matches[i].rm_so, matches[i].rm_eo,
+			//		srcCopy + matches[i].rm_so);
 				
 				strcpy(matchGroups[i], srcCopy + matches[i].rm_so);	
 				//if (i == 1){
@@ -175,13 +193,13 @@ int main(int argc, char * argv[]){
 			else if (numDigits == 2){
 				strcpy(matchGroupM, matchGroups[j]);
 			}
-			printf("Matched: %s\n", matchGroups[j]);
+		//	printf("Matched: %s\n", matchGroups[j]);
 		}
 	}
 	int N = atoi(matchGroupN);
 	int M = atoi(matchGroupM);
-	printf("N: %d\n", N);
-	printf("M: %d\n", M);
+	//printf("N: %d\n", N);
+	//printf("M: %d\n", M);
 	if (M < 0 || N < 0){
 		printf("Usage: M and N must be positive integers");
 		exit(1);
@@ -193,11 +211,11 @@ int main(int argc, char * argv[]){
 	
 	// BEGIN FILTERING THE FILE
 	int i;
-	printf("Filename here: %s\n", fileNames[0]);
-	printf("filenameslen: %d\n", fileNamesLen);
+	//printf("Filename here: %s\n", fileNames[0]);
+	//printf("filenameslen: %d\n", fileNamesLen);
 	for (int i = 0; i < fileNamesLen; i++){
-		printf("%d\n", i);
-		printf("%s\n", fileNames[i]);
+		//printf("%d\n", i);
+		//printf("%s\n", fileNames[i]);
 		if ( (fp = fopen(fileNames[i], "r")) == NULL){
 				perror("fopen");
 				exit(1);
@@ -210,13 +228,13 @@ int main(int argc, char * argv[]){
 			if (currN % N == 0){
 				// turn the newline [strlen(buf) - 1] into null terminating char 
 				buf[strlen(buf) - 1] = '\0';
-				printf("%d: %s\n", currN,  buf);
+				printf("%d:  %s\n", currN,  buf);
 				currSum = currN + M;
 			}
 			// print out the next M lines
 			else if (currN < currSum){
 				buf[strlen(buf) - 1] = '\0';
-				printf("%d: %s\n", currN,  buf);
+				printf("%d: %s\n",currN,  buf);
 			}
 			currN++;
 		}
