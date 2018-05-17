@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <ctype.h>
-// I define max matches to be 3 in a single string
+// I define max matches to be 4 in a single string
 #define MAX_MATCHES 4 
 
 int isRegularFile(char * path){
