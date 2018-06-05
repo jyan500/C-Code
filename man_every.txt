@@ -1,0 +1,31 @@
+#### every.c ####
+### Written by Jansen Yan ###
+### For CS 146 ###
+
+### Purpose ###
+
+Given filenames as arguments, print M Lines out of every N
+
+### Usage ###
+
+$ every [-N,M] [<list-of-files>]
+
+M and N must be positive, and M <= N
+
+Additional: 
+if M is not given, it will be defaulted to 1
+
+if no files are give, every will read from stdin
+
+if no -N,M is given but list of files are given,
+every will get the -N,M from an environment variable $EVERY,
+
+$EVERY must be defined like so in the bash profile, where N and M are 
+the numbers:
+
+export EVERY=-N,M
+
+
+
+
+
