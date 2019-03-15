@@ -1,8 +1,5 @@
 #### lss ####
 #### written by Jansen Yan ####
-#### CS 146 ####
-
-#### DISCLAIMER: I implemented the 40 point version ####
 
 #### Purpose ####
 Perform ls -lS (long ls with sorting by file size, displayed in descending order)
